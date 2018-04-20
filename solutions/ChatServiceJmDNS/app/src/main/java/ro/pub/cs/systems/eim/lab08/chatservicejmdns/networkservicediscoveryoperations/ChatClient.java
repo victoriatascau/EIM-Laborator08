@@ -23,6 +23,8 @@ import ro.pub.cs.systems.eim.lab08.chatservicejmdns.view.ChatConversationFragmen
 public class ChatClient {
 
     private Socket socket = null;
+    private String host = "";
+    private int port = 0;
 
     private Context context = null;
 
@@ -33,13 +35,19 @@ public class ChatClient {
 
     private List<Message> conversationHistory = new ArrayList<>();
 
+
     public ChatClient(Context context, String host, int port) {
         this.context = context;
+        this.port = port;
+        this.host = host;
+        this.socket = null;
+    }
+    public void connect() {
         try {
             socket = new Socket(host, port);
-            Log.d(Constants.TAG, "A socket has been created on: " + socket.getInetAddress() + ":" + socket.getLocalPort());
+            Log.i(Constants.TAG, "A socket has been created on: " + socket.getInetAddress() + ":" + socket.getLocalPort());
         } catch (IOException ioException) {
-            Log.e(Constants.TAG, "An exception has occurred while creating the socket: " + ioException.getMessage());
+            Log.i(Constants.TAG, "An exception has occurred while creating the socket: " + ioException.getMessage());
             if (Constants.DEBUG) {
                 ioException.printStackTrace();
             }
@@ -170,6 +178,10 @@ public class ChatClient {
         return context;
     }
 
+    public String toString(){
+        return host.toString() + ":" + port;
+    }
+
     public void setConversationHistory(List<Message> conversationHistory) {
         this.conversationHistory = conversationHistory;
     }
@@ -187,8 +199,10 @@ public class ChatClient {
     }
 
     public void stopThreads() {
-        sendThread.stopThread();
-        receiveThread.stopThread();
+        if(sendThread != null)
+            sendThread.stopThread();
+        if(receiveThread != null)
+            receiveThread.stopThread();
         try {
             if (socket != null) {
                 socket.close();

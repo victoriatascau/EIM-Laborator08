@@ -5,47 +5,63 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_gravity="end">
 
         <EditText
             android:id="@+id/port_edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:layout_weight="0.2"
             android:ems="7"
+            android:hint="@string/service_port"
             android:inputType="number"
-            android:hint="@string/service_port"/>
+            android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <android.support.v4.widget.Space
-            android:layout_width="10dp"
+            android:layout_width="5dp"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/service_registration_status_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="0.35"
             android:background="@color/colorRed"
-            android:text="@string/register_service"/>
+            android:text="@string/register_service" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="5dp" />
+
+        <Button
+            android:id="@+id/service_discovery_status_button"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.45"
+            android:background="@color/colorRed"
+            android:text="@string/start_service_discovery" />
 
     </LinearLayout>
 
+<!--
     <android.support.v4.widget.Space
         android:layout_width="wrap_content"
         android:layout_height="10dp" />
+-->
 
-    <Button
-        android:id="@+id/service_discovery_status_button"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/service_discovery_local_addr"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/colorRed"
-        android:text="@string/start_service_discovery"/>
+        android:text="Local IP" />
 
     <android.support.v4.widget.Space
         android:layout_width="wrap_content"
-        android:layout_height="10dp" />
+        android:layout_height="1dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,31 +70,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="32dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@drawable/frame_border">
+            android:background="@drawable/frame_border"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="sans"
-                android:textColor="@color/colorDarkBlue"
-                android:text="@string/discovered_services"/>
+                android:text="@string/discovered_services"
+                android:textColor="@color/colorDarkBlue" />
 
             <ListView
                 android:id="@+id/discovered_services_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
         <android.support.v4.widget.Space
             android:layout_width="wrap_content"
-            android:layout_height="10dp" />
+            android:layout_height="1dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,9 +104,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:typeface="sans"
                 android:textColor="@color/colorDarkBlue"
                 android:text="@string/conversations"/>
 
