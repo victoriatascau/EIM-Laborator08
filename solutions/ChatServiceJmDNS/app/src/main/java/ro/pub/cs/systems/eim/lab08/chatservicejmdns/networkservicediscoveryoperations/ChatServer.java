@@ -33,7 +33,7 @@ public class ChatServer extends Thread {
             Log.i(Constants.TAG, "Waiting for a connection...");
             try {
                 Socket socket = serverSocket.accept();
-                Log.i(Constants.TAG, "Received a connection request from: " + socket.getInetAddress() + ":" + socket.getLocalPort());
+                Log.i(Constants.TAG, "Received a connection request from: " + socket.getInetAddress());
                 List<ChatClient> communicationFromClients = networkServiceDiscoveryOperations.getCommunicationFromClients();
                 communicationFromClients.add(new ChatClient(null, socket));
                 networkServiceDiscoveryOperations.setCommunicationFromClients(communicationFromClients);

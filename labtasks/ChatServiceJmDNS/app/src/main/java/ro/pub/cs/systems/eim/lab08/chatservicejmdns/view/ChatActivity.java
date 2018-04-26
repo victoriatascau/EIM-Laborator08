@@ -9,8 +9,13 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import ro.pub.cs.systems.eim.lab08.chatservicejmdns.R;
 import ro.pub.cs.systems.eim.lab08.chatservicejmdns.general.Constants;
@@ -35,7 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(Constants.TAG, "onCreate() callback method was invoked!");
+        Log.i(Constants.TAG, "onCreate() callback method was invoked!");
         setContentView(R.layout.activity_chat);
 
         wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -46,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         discoveredServices = new ArrayList<>();
         conversations = new ArrayList<>();
 
+
         setHandler(new Handler());
 
         setNetworkServiceDiscoveryOperations(new NetworkServiceDiscoveryOperations(this));
@@ -55,10 +61,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(Constants.TAG, "onResume() callback method was invoked!");
+        Log.i(Constants.TAG, "onResume() callback method was invoked!");
         if (networkServiceDiscoveryOperations != null) {
-            if (!serviceDiscoveryStatus) {
-                serviceDiscoveryStatus = true;
+            if (serviceDiscoveryStatus) {
                 networkServiceDiscoveryOperations.startNetworkServiceDiscovery();
                 if (getChatNetworkServiceFragment() != null) {
                     getChatNetworkServiceFragment().startServiceDiscovery();
@@ -69,10 +74,9 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Log.v(Constants.TAG, "onPause() callback method was invoked!");
+        Log.i(Constants.TAG, "onPause() callback method was invoked!");
         if (networkServiceDiscoveryOperations != null) {
             if (serviceDiscoveryStatus) {
-                serviceDiscoveryStatus = false;
                 networkServiceDiscoveryOperations.stopNetworkServiceDiscovery();
                 if (getChatNetworkServiceFragment() != null) {
                     getChatNetworkServiceFragment().stopServiceDiscovery();
@@ -84,7 +88,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.v(Constants.TAG, "onDestroy() callback method was invoked!");
+        Log.i(Constants.TAG, "onDestroy() callback method was invoked!");
         if (networkServiceDiscoveryOperations != null) {
             if (serviceDiscoveryStatus) {
                 serviceDiscoveryStatus = false;

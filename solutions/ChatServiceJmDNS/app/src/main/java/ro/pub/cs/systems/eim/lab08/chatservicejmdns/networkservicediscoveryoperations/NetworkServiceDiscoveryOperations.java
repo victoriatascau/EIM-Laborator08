@@ -11,7 +11,6 @@ import java.net.ServerSocket;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
@@ -161,7 +160,7 @@ public class NetworkServiceDiscoveryOperations {
     }
 
     public void registerNetworkService(int port) throws Exception {
-        Log.v(Constants.TAG, "Register network service on port " + port);
+        Log.i(Constants.TAG, "Register network service on port " + port);
         chatServer = new ChatServer(this, port);
         ServerSocket serverSocket = chatServer.getServerSocket();
         if (serverSocket == null) {
@@ -180,10 +179,16 @@ public class NetworkServiceDiscoveryOperations {
             serviceName = serviceInfo.getName();
             jmDNS.registerService(serviceInfo);
         }
+        chatActivity.setTitle(serviceInfo.getName());
+        Log.i(Constants.TAG, "Register service " +
+                serviceInfo.getName() + ":" +
+                serviceInfo.getTypeWithSubtype() + ":" +
+                serviceInfo.getPort()
+        );
     }
 
     public void unregisterNetworkService() {
-        Log.v(Constants.TAG, "Unregister network service");
+        Log.i(Constants.TAG, "Unregister network service");
         if (jmDNS != null) {
             jmDNS.unregisterAllServices();
         }
@@ -195,17 +200,18 @@ public class NetworkServiceDiscoveryOperations {
         ArrayList<NetworkService> conversations = chatActivity.getConversations();
         conversations.clear();
         chatActivity.setConversations(conversations);
+        chatActivity.setTitle("Chat Service JmDNS");
     }
 
     public void startNetworkServiceDiscovery() {
-        Log.v(Constants.TAG, "Start network service discovery");
+        Log.i(Constants.TAG, "Start network service discovery");
         if (jmDNS != null && serviceListener != null) {
             jmDNS.addServiceListener(Constants.SERVICE_TYPE, serviceListener);
         }
     }
 
     public void stopNetworkServiceDiscovery() {
-        Log.v(Constants.TAG, "Stop network service discovery");
+        Log.i(Constants.TAG, "Stop network service discovery");
         if (jmDNS != null && serviceListener != null) {
             jmDNS.removeServiceListener(Constants.SERVICE_TYPE, serviceListener);
         }
@@ -245,7 +251,7 @@ public class NetworkServiceDiscoveryOperations {
             NetworkService conversation = new NetworkService(
                     null,
                     communicationFromClient.getSocket().getInetAddress().toString(),
-                    communicationFromClient.getSocket().getLocalPort(),
+                    communicationFromClient.getSocket().getPort(),
                     Constants.CONVERSATION_FROM_CLIENT
             );
             conversations.add(conversation);

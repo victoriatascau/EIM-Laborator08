@@ -10,11 +10,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+import java.util.List;
 
 import ro.pub.cs.systems.eim.lab08.chatservicejmdns.R;
 import ro.pub.cs.systems.eim.lab08.chatservicejmdns.controller.NetworkServiceAdapter;
 import ro.pub.cs.systems.eim.lab08.chatservicejmdns.general.Constants;
+import ro.pub.cs.systems.eim.lab08.chatservicejmdns.networkservicediscoveryoperations.ChatClient;
 import ro.pub.cs.systems.eim.lab08.chatservicejmdns.networkservicediscoveryoperations.NetworkServiceDiscoveryOperations;
 
 public class ChatNetworkServiceFragment extends Fragment {
@@ -34,6 +43,7 @@ public class ChatNetworkServiceFragment extends Fragment {
 
     private ListView discoveredServicesListView = null;
     private ListView conversationsListView = null;
+
 
     private ServiceRegistrationStatusButtonListener serviceRegistrationStatusButtonListener = new ServiceRegistrationStatusButtonListener();
     private class ServiceRegistrationStatusButtonListener implements Button.OnClickListener {
@@ -84,11 +94,38 @@ public class ChatNetworkServiceFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle state) {
-        Log.v(Constants.TAG, "ChatNetworkServiceFragment -> onCreateView() callback method was invoked");
+        Log.i(Constants.TAG, "ChatNetworkServiceFragment -> onCreateView() callback method was invoked");
 
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_chat_network_service, parent, false);
         }
+        // List all IPs where the server is visible
+        Enumeration interfaces = null;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (IOException e){
+            Log.e(Constants.TAG, "Could not query interface list: " + e.getMessage());
+            if (Constants.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        String IPs = "";
+        while(interfaces.hasMoreElements())
+        {
+            NetworkInterface n = (NetworkInterface) interfaces.nextElement();
+            Enumeration ee = n.getInetAddresses();
+            while (ee.hasMoreElements())
+            {
+                InetAddress i = (InetAddress) ee.nextElement();
+                if (i instanceof Inet4Address) {
+                    if(IPs.length() > 0)
+                        IPs += ", ";
+                    IPs += i.getHostAddress().toString();
+                }
+            }
+        }
+        TextView LocalIPs = (TextView)view.findViewById(R.id.service_discovery_local_addr);
+        LocalIPs.setText(IPs);
 
         return view;
     }
@@ -97,7 +134,7 @@ public class ChatNetworkServiceFragment extends Fragment {
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
 
-        Log.v(Constants.TAG, "ChatNetworkServiceFragment -> onActivityCreated() callback method was invoked");
+        Log.i(Constants.TAG, "ChatNetworkServiceFragment -> onActivityCreated() callback method was invoked");
 
         servicePortEditText = (EditText)getActivity().findViewById(R.id.port_edit_text);
 
@@ -111,11 +148,11 @@ public class ChatNetworkServiceFragment extends Fragment {
         networkServiceDiscoveryOperations = chatActivity.getNetworkServiceDiscoveryOperations();
 
         discoveredServicesListView = (ListView)getActivity().findViewById(R.id.discovered_services_list_view);
-        discoveredServicesAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getDiscoveredServices());
+        discoveredServicesAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getDiscoveredServices(), chatActivity.getNetworkServiceDiscoveryOperations());
         discoveredServicesListView.setAdapter(discoveredServicesAdapter);
 
         conversationsListView = (ListView)getActivity().findViewById(R.id.conversations_list_view);
-        conversationsAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getConversations());
+        conversationsAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getConversations(), chatActivity.getNetworkServiceDiscoveryOperations());
         conversationsListView.setAdapter(conversationsAdapter);
     }
 

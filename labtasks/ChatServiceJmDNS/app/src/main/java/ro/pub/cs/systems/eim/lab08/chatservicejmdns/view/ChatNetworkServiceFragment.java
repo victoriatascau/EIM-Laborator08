@@ -84,12 +84,15 @@ public class ChatNetworkServiceFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle state) {
-        Log.v(Constants.TAG, "ChatNetworkServiceFragment -> onCreateView() callback method was invoked");
+        Log.i(Constants.TAG, "ChatNetworkServiceFragment -> onCreateView() callback method was invoked");
 
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_chat_network_service, parent, false);
         }
-
+	// Question 5c
+	// get a list of network interfaces available on the phone
+	// get a list of IPv4 addresses associated with these interfaces
+	// Update the textview with the local addresses
         return view;
     }
 
@@ -97,7 +100,7 @@ public class ChatNetworkServiceFragment extends Fragment {
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
 
-        Log.v(Constants.TAG, "ChatNetworkServiceFragment -> onActivityCreated() callback method was invoked");
+        Log.i(Constants.TAG, "ChatNetworkServiceFragment -> onActivityCreated() callback method was invoked");
 
         servicePortEditText = (EditText)getActivity().findViewById(R.id.port_edit_text);
 
@@ -111,11 +114,11 @@ public class ChatNetworkServiceFragment extends Fragment {
         networkServiceDiscoveryOperations = chatActivity.getNetworkServiceDiscoveryOperations();
 
         discoveredServicesListView = (ListView)getActivity().findViewById(R.id.discovered_services_list_view);
-        discoveredServicesAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getDiscoveredServices());
+        discoveredServicesAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getDiscoveredServices(), chatActivity.getNetworkServiceDiscoveryOperations());
         discoveredServicesListView.setAdapter(discoveredServicesAdapter);
 
         conversationsListView = (ListView)getActivity().findViewById(R.id.conversations_list_view);
-        conversationsAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getConversations());
+        conversationsAdapter = new NetworkServiceAdapter(chatActivity, chatActivity.getConversations(), chatActivity.getNetworkServiceDiscoveryOperations());
         conversationsListView.setAdapter(conversationsAdapter);
     }
 
