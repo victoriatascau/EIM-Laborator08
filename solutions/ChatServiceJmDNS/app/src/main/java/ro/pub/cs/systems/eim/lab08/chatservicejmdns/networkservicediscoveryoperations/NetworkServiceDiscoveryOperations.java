@@ -146,10 +146,13 @@ public class NetworkServiceDiscoveryOperations {
                 NetworkService networkService = new NetworkService(serviceEvent.getName(), host, port, Constants.CONVERSATION_TO_SERVER);
                 if (!discoveredServices.contains(networkService)) {
                     ChatClient chatClient = new ChatClient(null, host, port);
-                    communicationToServers.add(chatClient);
-                    discoveredServices.add(networkService);
-                    chatActivity.setDiscoveredServices(discoveredServices);
+                    if (chatClient.getSocket() != null) {
+                        communicationToServers.add(chatClient);
+                        discoveredServices.add(networkService);
+                        chatActivity.setDiscoveredServices(discoveredServices);
+                    }
                 }
+
                 Log.i(Constants.TAG, "A service has been discovered on " + host + ":" + port);
             }
         };

@@ -161,7 +161,7 @@ public class NetworkServiceDiscoveryOperations {
     }
 
     public void registerNetworkService(int port) throws Exception {
-        Log.v(Constants.TAG, "Register network service on port " + port);
+        Log.i(Constants.TAG, "Register network service on port " + port);
         chatServer = new ChatServer(this, port);
         ServerSocket serverSocket = chatServer.getServerSocket();
         if (serverSocket == null) {
@@ -180,10 +180,13 @@ public class NetworkServiceDiscoveryOperations {
             serviceName = serviceInfo.getName();
             jmDNS.registerService(serviceInfo);
         }
+	// question 5d
+	// set the title of the activity to the advertised service name
+	// Log name, type and port 
     }
 
     public void unregisterNetworkService() {
-        Log.v(Constants.TAG, "Unregister network service");
+        Log.i(Constants.TAG, "Unregister network service");
         if (jmDNS != null) {
             jmDNS.unregisterAllServices();
         }
@@ -195,17 +198,19 @@ public class NetworkServiceDiscoveryOperations {
         ArrayList<NetworkService> conversations = chatActivity.getConversations();
         conversations.clear();
         chatActivity.setConversations(conversations);
+        // question 5d
+	// reset the title to default when not advertising anything
     }
 
     public void startNetworkServiceDiscovery() {
-        Log.v(Constants.TAG, "Start network service discovery");
+        Log.i(Constants.TAG, "Start network service discovery");
         if (jmDNS != null && serviceListener != null) {
             jmDNS.addServiceListener(Constants.SERVICE_TYPE, serviceListener);
         }
     }
 
     public void stopNetworkServiceDiscovery() {
-        Log.v(Constants.TAG, "Stop network service discovery");
+        Log.i(Constants.TAG, "Stop network service discovery");
         if (jmDNS != null && serviceListener != null) {
             jmDNS.removeServiceListener(Constants.SERVICE_TYPE, serviceListener);
         }
@@ -245,7 +250,7 @@ public class NetworkServiceDiscoveryOperations {
             NetworkService conversation = new NetworkService(
                     null,
                     communicationFromClient.getSocket().getInetAddress().toString(),
-                    communicationFromClient.getSocket().getLocalPort(),
+                    communicationFromClient.getSocket().getPort(),
                     Constants.CONVERSATION_FROM_CLIENT
             );
             conversations.add(conversation);

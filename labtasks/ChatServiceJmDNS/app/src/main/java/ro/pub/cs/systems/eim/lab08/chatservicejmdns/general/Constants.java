@@ -8,7 +8,7 @@ public interface Constants {
 
     final public static String SERVICE_NAME = "Chat";
     final public static String SERVICE_TYPE = "_chatservice._tcp.local.";
-    final public static String SERVICE_DESCRIPTION = "EIM Chat Service with JmDNS";
+    final public static String SERVICE_DESCRIPTION = "\u001bEIM Chat Service with JmDNS";
 
     final public static String FRAGMENT_TAG = "ContainerFrameLayout";
 
