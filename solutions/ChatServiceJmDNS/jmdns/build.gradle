@@ -1,4 +1,0 @@
-configurations.maybeCreate("default")
-artifacts.add("default", file('jmdns-3.5.5.jar'))
-
-// implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'

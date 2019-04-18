@@ -22,6 +22,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:25.2.0'
-    implementation project(':jmdns')
+    //implementation project(':jmdns')
+    implementation group: 'org.jmdns', name: 'jmdns', version: '3.5.5'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
 }
