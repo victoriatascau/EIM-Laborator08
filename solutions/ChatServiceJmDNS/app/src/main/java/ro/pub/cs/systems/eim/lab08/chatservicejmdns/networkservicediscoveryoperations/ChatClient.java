@@ -8,6 +8,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,8 @@ public class ChatClient {
         try {
             socket = new Socket(host, port);
             Log.i(Constants.TAG, "A socket has been created on: " + socket.getInetAddress() + ":" + socket.getLocalPort());
+        } catch (NoRouteToHostException e){
+        Log.i(Constants.TAG, "Address is stale: " + host + ":" + port);
         } catch (IOException ioException) {
             Log.i(Constants.TAG, "An exception has occurred while creating the socket: " + ioException.getMessage());
             if (Constants.DEBUG) {
