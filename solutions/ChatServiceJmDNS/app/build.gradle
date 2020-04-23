@@ -5,7 +5,7 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "ro.pub.cs.systems.eim.lab08.chatservicejmdns"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -21,7 +21,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:25.2.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     //implementation project(':jmdns')
     implementation group: 'org.jmdns', name: 'jmdns', version: '3.5.5'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
