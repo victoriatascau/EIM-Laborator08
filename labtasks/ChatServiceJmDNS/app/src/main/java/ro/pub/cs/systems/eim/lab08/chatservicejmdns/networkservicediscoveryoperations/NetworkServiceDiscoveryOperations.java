@@ -166,7 +166,6 @@ public class NetworkServiceDiscoveryOperations {
             throw new Exception("Could not get server socket");
         }
         chatServer.start();
-
         ServiceInfo serviceInfo = ServiceInfo.create(
                 Constants.SERVICE_TYPE,
                 Constants.SERVICE_NAME + Utilities.generateIdentifier(Constants.IDENTIFIER_LENGTH),
@@ -180,7 +179,9 @@ public class NetworkServiceDiscoveryOperations {
         }
 	// question 5d
 	// set the title of the activity to the advertised service name
-	// Log name, type and port 
+        chatActivity.setTitle(serviceInfo.getName());
+	// Log name, type and port
+        Log.i(Constants.TAG, "Register service " + serviceInfo.getName() + " with type " + serviceInfo.getTypeWithSubtype() + " and port " + serviceInfo.getPort());
     }
 
     public void unregisterNetworkService() {
@@ -198,6 +199,7 @@ public class NetworkServiceDiscoveryOperations {
         chatActivity.setConversations(conversations);
         // question 5d
 	// reset the title to default when not advertising anything
+        chatActivity.setTitle("Chat Service JmDNS");
     }
 
     public void startNetworkServiceDiscovery() {
